@@ -80,7 +80,8 @@ def prediction_page():
 import pandas as pd
 
 # Sample leagues and teams (replace this with your actual data)
-df = pd.read_csv(r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\CodeKikkers\DATA\W13-deployment.csv")
+# df = pd.read_csv(r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\CodeKikkers\DATA\W13-deployment.csv")
+df = pd.read_csv(r"W13-deployment.csv")
 
 @views.route('/get_teams/<league>', methods=['GET'], endpoint='get_teams')
 def get_teams(league):

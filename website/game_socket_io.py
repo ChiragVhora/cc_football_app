@@ -31,7 +31,9 @@ def socket_page():
 ##################################### Game Portion #####################################
 
 # Game Portion ----------------------------------
-df = pd.read_csv(r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\CodeKikkers\DATA\W13-deployment.csv")
+# df = pd.read_csv(r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\CodeKikkers\DATA\W13-deployment.csv")
+df = pd.read_csv(r"W13-deployment.csv")
+
 # df.columns
 # # player data which will populate dropdowns in game 
 players = {
