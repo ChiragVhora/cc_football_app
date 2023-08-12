@@ -1,0 +1,222 @@
+{% extends "base.html" %} {% block title %}Betting Simulator{% endblock %} {% block content
+    %}
+
+<head>
+    <title>Player Selection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</head>
+    
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Player Selection Section -->
+            <div class="col-md-4 mt-4">
+                <h2>Player Selection</h2>
+                <form id="player-selection-form">
+                    <!-- selection for GK -->
+                    <div class="mb-3">
+                        <label for="goalkeeper-select">Select Goalkeeper:</label>
+                        <select id="goalkeeper-select" class="form-select">
+                           <option value="">Select Goalkeeper</option>
+                            
+                        </select>
+                    </div>
+                
+                    <!-- selection for Defenders -->
+                    <div class="mb-3">
+                        <label for="defender-select">Select Defenders:</label>
+                        <select id="defender1-select" class="form-select">
+                            <option value="">Select Defender</option>
+
+                        </select>
+                        <select id="defender2-select" class="form-select mt-2">
+                            <option value="">Select Defender</option>
+                        </select>
+                        <select id="defender3-select" class="form-select mt-2">
+                            <option value="">Select Defender</option>
+                        </select>
+                    </div>
+
+                    <!-- selection for Attackers -->
+                    <div class="mb-3">
+                        <label for="attacker-select">Select Attackers:</label>
+                        <select id="attacker1-select" class="form-select">
+                            <option value="">Select Attacker</option>
+                            
+                        </select>
+                        <select id="attacker2-select" class="form-select mt-2">
+                            <option value="">Select Attacker</option>
+                        </select>
+                    </div>
+
+
+                    <button type="button" id="submit-selection-btn" class="btn btn-primary">Submit Selection</button>
+                </form>
+            </div>
+
+            <!-- Win/Lose Result Section -->
+            <div class="col-md-4 mt-4">
+            
+                <h2>Current Game Result</h2>
+                <div id="user-count-section">
+                    <h5>Number of Users Playing(Live): <span id="user-count">0</span></h5>
+                </div>
+
+                <div id="winner-section" style="display: none;">
+                    <h2>Winner Announcement</h2>
+                    <h3 id="winner-name"></h3>
+                    <h1 id="win-lose"></h1>
+                </div>
+            </div>
+
+            <!-- Leaderboard Section -->
+            <div class="col-md-4 mt-4">
+                <h2>Leaderboard</h2>
+                <table class="table" id="leader-board">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leader-table-body">
+                        <!-- Leaderboard rows will be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Script to handle WebSocket and player selection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script>
+        // Connect to the SocketIO server
+        const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+        // Update user count
+        socket.on('user_count', data => {
+            document.getElementById('user-count').textContent = data['count'];
+        });
+
+        // Event listener for the "Select Player" button click
+        document.getElementById('submit-selection-btn').addEventListener('click', () => { 
+            // Get the selected player from the dropdown
+            const goalkeeper = document.getElementById('goalkeeper-select').value;
+            const defender1Select = document.getElementById('defender1-select').value;
+            const defender2Select = document.getElementById('defender2-select').value;
+            const defender3Select = document.getElementById('defender3-select').value;
+            const attacker1Select = document.getElementById('attacker1-select').value;
+            const attacker2Select = document.getElementById('attacker2-select').value;
+
+            
+
+            // Send the player selection data to the server
+            socket.emit('player_selection_list', {'selected_player_list': [goalkeeper, defender1Select, defender2Select, defender3Select, attacker1Select, attacker2Select]});
+        });
+
+        // Event listener for receiving the winner announcement from the server
+        socket.on('winner_announcement', data => {
+            // Display the winner section and update the winner's name
+            const sessionID = socket.id; 
+
+            document.getElementById('winner-section').style.display = 'block';
+            document.getElementById('winner-name').textContent = data['winner'];
+
+            if (data['winner'] == sessionID){
+                document.getElementById('win-lose').textContent = "YOU WIN !";
+            }else{
+                document.getElementById('win-lose').textContent = "You lose!, Better luck next time ";            
+            }
+
+        });
+
+        
+
+
+        // leader Board func 
+        function addRow(no, name) {
+            // Get the table element in which you want to add row
+            //let table = document.getElementById("leader-board");
+            let table = document.getElementById("leader-table-body");
+        
+            // Create a row using the inserRow() method and
+            // specify the index where you want to add the row
+            let row = table.insertRow(-1); // We are adding at the end
+        
+            // Create table cells
+            let c1 = row.insertCell(0);
+            let c2 = row.insertCell(1);
+        
+            // Add data to c1 and c2
+            c1.innerText = no
+            c2.innerText = name
+        }
+
+        // Event listener for receiving the leaderboard announcement from the server
+        socket.on('leader_board_update_announced', data => {
+            // Display the winner section and update the winner's name
+            winners = data['leader_list'];
+            console.log(winners)
+
+            // removing all rows and printing it again with new leaderboard
+            //document.getElementById("leader-board").innerHTML= "<thead><tr<th scope='col'>#</th><th scope='col'>Name</th></tr></thead><tbody></tbody>";
+            const tbody = document.getElementById('leader-table-body');
+            tbody.innerHTML = ''; 
+
+
+            let i=1;
+            for (let winner_ in winners){
+                addRow(i, winner_[i]);
+                i += 1;
+            }
+
+        });
+
+        
+        function RetryClicked(){
+            document.getElementById('winner-section').style.display = 'none';    
+        }
+
+
+
+        // ------------------other------------------
+        // JavaScript code to populate player options when the page loads
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch player data from the Flask backend
+            fetch('/get_players')
+                .then(response => response.json())
+                .then(players => {
+                    const goalkeepers = players['goalkeepers'];
+                    const defenders = players['defenders'];
+                    const attackers = players['attackers'];
+
+                    // Populate goalkeeper select
+                    populateOptions(document.getElementById('goalkeeper-select'), goalkeepers);
+
+                    // Populate defender selects
+                    populateOptions(document.getElementById('defender1-select'), defenders);
+                    populateOptions(document.getElementById('defender2-select'), defenders);
+                    populateOptions(document.getElementById('defender3-select'), defenders);
+
+                    // Populate attacker selects
+                    populateOptions(document.getElementById('attacker1-select'), attackers);
+                    populateOptions(document.getElementById('attacker2-select'), attackers);
+                })
+                .catch(error => console.error('Error fetching player data:', error));
+        });
+
+        function populateOptions(selectElement, options) {
+            for (const option of options) {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            }
+        }
+    </script>
+</body>
+{% endblock %}

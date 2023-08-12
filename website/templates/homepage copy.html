@@ -1,0 +1,68 @@
+
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h1 align="center">Notes</h1>
+    <ul class="list-group list-group-flush" id="notes">
+      {% for note in user.notes %}
+      <li class="list-group-item">
+        {{ note.data }}
+        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+    <form method="POST">
+      <textarea name="note" id="note" class="form-control"></textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Add Note</button>
+      </div>
+    </form>
+    {% endblock %}
+
+    
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Kickers.com Home Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-s0x5yk1taI3j9eB3H6n2WsrbczOV6o8C1gG2VCfF4PPXTT2mGgeXWSMRRvrd0sq" crossorigin="anonymous">
+
+</head>
+<body>
+    <!-- <header style="background-color: #071952; padding: 40px; text-align: center; position: relative;">
+    <h1 style="color: #fff; display: inline-block; margin-right: 20px; margin-left: 20px;">CODE KICKERS.com</h1>
+	</header> -->
+    <!-- User login icon on the top right side -->
+    <!-- <div style="position: absolute; top: 20px; right: 20px;">
+        <a href="#" style="color: #fff;">
+            <i class="fas fa-user" style="color: #fff;"></i>  User Login
+        </a>
+    </div> -->
+	<div id="content"; style="margin-top: 80px;">
+        <h2>CODE KICKERS Make Your Best Team</h2>
+        <p>Soccer Player Performance Predictions gives rating helps you choose the best player to be in your team.</p>
+        <p>Explore the dashboard to evaluate the performance of the player of your interest.</p>
+        <!-- Add more content as needed -->
+    </div>
+	<div class="solid-box-container">
+		<div class="solid-box" onclick="window.location.href = 'formpage.html';">
+			<h3>Player Performance Prediction</h3>
+			<p>Click here to go to Prediction page.</p>
+		</div>
+		<div class="solid-box" onclick="window.location.href = 'ced.html';">
+			<h3>Dashboard</h3>
+			<p>Click here to view the dashboard.</p>
+		</div>
+		<div class="solid-box" onclick="window.location.href = 'playerdetails.html';">
+			<h3>Player Detail</h3>
+			<p>Click here to go to PlayerDetail page.</p>
+		</div>    
+	</div>
+ 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

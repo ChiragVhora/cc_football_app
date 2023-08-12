@@ -1,0 +1,331 @@
+{% extends "base.html" %} {% block title %}Player Stats Prediction{% endblock %} {% block content
+    %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        function validate() {
+            var age = parseInt(document.getElementById('age').value);
+            var height = parseInt(document.getElementById('height').value);
+            var weight = parseInt(document.getElementById('weight').value);
+            var appearances = parseInt(document.getElementById('appearances').value);
+            var substituteAppearances = parseInt(document.getElementById('substitute_appearances').value);
+            var playtime = document.getElementById('playtime').value;
+            var goals = document.getElementById('goals').value;
+            var assists = document.getElementById('assists').value;
+            var yellowCards = document.getElementById('yellow_cards').value;
+            var redCards = document.getElementById('red_cards').value;
+            var setPieceGoal = document.getElementById('set_piece_goal').value;
+            var passingPercentage = parseInt(document.getElementById('passing_percentage').value);
+            var aerialsWon = document.getElementById('aerials_won').value;
+            var manOfTheMatches = document.getElementById('man_of_the_matches').value;
+
+            if (isNaN(age) || age < 0 || age > 100) {
+                alert('Please enter a valid age between 0 and 100.');
+                return false;
+            }
+
+            if (isNaN(height) || height < 0 || height > 400) {
+                alert('Please enter a valid height between 0 and 400.');
+                return false;
+            }
+
+            if (isNaN(weight) || weight < 0 || weight > 200) {
+                alert('Please enter a valid weight between 0 and 200.');
+                return false;
+            }
+
+            if (appearances < 0 || appearances > 200) {
+                alert('Please enter a valid number of appearances between 0 and 200.');
+                return false;
+            }
+
+            if (substituteAppearances < 0 || substituteAppearances > 100) {
+                alert('Please enter a valid number of substitute appearances between 0 and 100.');
+                return false;
+            }
+
+            if (isNaN(playtime) || playtime === "") {
+                alert('Please enter a valid value for playtime in minutes.');
+                return false;
+            }
+
+            if (isNaN(goals) || goals === "") {
+                alert('Please enter a valid value for goals.');
+                return false;
+            }
+
+            if (isNaN(assists) || assists === "") {
+                alert('Please enter a valid value for assists.');
+                return false;
+            }
+
+            if (isNaN(yellowCards) || yellowCards === "") {
+                alert('Please enter a valid value for yellow cards.');
+                return false;
+            }
+
+            if (isNaN(redCards) || redCards === "") {
+                alert('Please enter a valid value for red cards.');
+                return false;
+            }
+
+            if (isNaN(setPieceGoal) || setPieceGoal === "") {
+                alert('Please enter a valid value for set piece goal.');
+                return false;
+            }
+
+            if (passingPercentage < 0 || passingPercentage > 100) {
+                alert('Please enter a valid passing percentage between 0 and 100.');
+                return false;
+            }
+
+            if (isNaN(aerialsWon) || aerialsWon === "") {
+                alert('Please enter a valid value for aerials won.');
+                return false;
+            }
+
+            if (isNaN(manOfTheMatches) || manOfTheMatches === "") {
+                alert('Please enter a valid value for man of the matches.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function predictStats() {
+            var cont = validate();
+            if (!cont) {
+                return;
+            }
+
+            // Show the progress bar
+            document.getElementById("progress-bar").style.display = "block";
+
+            // Get the form data
+            var formData = new FormData();
+            formData.append('player_name', document.getElementById('player_name').value);
+            formData.append('age', document.getElementById('age').value);
+            formData.append('height', document.getElementById('height').value);
+            formData.append('weight', document.getElementById('weight').value);
+            formData.append('forward', document.getElementById('forward').value);
+            formData.append('goalkeeper', document.getElementById('goalkeeper').value);
+            formData.append('midfielder', document.getElementById('midfielder').value);
+            formData.append('attacking_midfielder', document.getElementById('attacking_midfielder').value);
+            formData.append('center', document.getElementById('center').value);
+            formData.append('defender', document.getElementById('defender').value);
+            formData.append('appearances', document.getElementById('appearances').value);
+            formData.append('substitute_appearances', document.getElementById('substitute_appearances').value);
+            formData.append('playtime', document.getElementById('playtime').value);
+            formData.append('goals', document.getElementById('goals').value);
+            formData.append('assists', document.getElementById('assists').value);
+            formData.append('yellow_cards', document.getElementById('yellow_cards').value);
+            formData.append('red_cards', document.getElementById('red_cards').value);
+            formData.append('set_piece_goal', document.getElementById('set_piece_goal').value);
+            formData.append('passing_percentage', document.getElementById('passing_percentage').value);
+            formData.append('aerials_won', document.getElementById('aerials_won').value);
+            formData.append('man_of_the_matches', document.getElementById('man_of_the_matches').value);
+
+            // Send the form data to the prediction endpoint
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            }).then(function(response) {
+                // Hide the progress bar
+                document.getElementById("progress-bar").style.display = "none";
+
+                // Show the result
+                document.getElementById("result").style.display = "block";
+
+                response.json().then(function(data) {
+                    if (data.success) {
+                        var prediction = data.prediction.toFixed(2);
+
+                        var resultHTML = "<h2>Player Stats Prediction</h2>";
+                        resultHTML += "<p><b>Rating:</b> " + prediction + "</p>";
+
+                        document.getElementById("result").innerHTML = resultHTML;
+                        document.getElementById("result").style.color = "green";
+                    } else {
+                        document.getElementById("result").innerHTML = "<p>Failed to predict player stats. Please try again.</p>";
+                        document.getElementById("result").style.color = "red";
+                    }
+                });
+            });
+        }
+    </script>
+
+    <style>
+        body{
+            background-color: #a3caeb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Player Stats Prediction</h2>
+        <form>
+            <div class="form-group">
+                <label for="player_name">Player Name:</label>
+                <input type="text" class="form-control" id="player_name" name="player_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age (0-100):</label>
+                <input type="number" class="form-control" id="age" name="age" min="0" max="100" required>
+                <!-- <div class="invalid-feedback">Please enter a valid age between 0 and 100.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="height">Height (0-400 cm):</label>
+                <input type="number" class="form-control" id="height" name="height" min="0" max="400" required>
+                <!-- <div class="invalid-feedback">Please enter a valid height between 0 and 400 cm.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="weight">Weight (0-200 kg):</label>
+                <input type="number" class="form-control" id="weight" name="weight" min="0" max="200" required>
+                <!-- <div class="invalid-feedback">Please enter a valid weight between 0 and 200 kg.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="forward">Forward:</label>
+                <select class="form-control" id="forward" name="forward" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for forward position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="goalkeeper">Goalkeeper:</label>
+                <select class="form-control" id="goalkeeper" name="goalkeeper" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for goalkeeper position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="midfielder">Midfielder:</label>
+                <select class="form-control" id="midfielder" name="midfielder" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for midfielder position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="attacking_midfielder">Attacking Midfielder:</label>
+                <select class="form-control" id="attacking_midfielder" name="attacking_midfielder" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for attacking midfielder position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="center">Center:</label>
+                <select class="form-control" id="center" name="center" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for center position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="defender">Defender:</label>
+                <select class="form-control" id="defender" name="defender" required>
+                    <option value="">Select</option>
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+                <!-- <div class="invalid-feedback">Please select an option for defender position.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="appearances">Appearances (0-200):</label>
+                <input type="number" class="form-control" id="appearances" name="appearances" min="0" max="200" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of appearances between 0 and 200.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="substitute_appearances">Substitute (Appearances) (0-100):</label>
+                <input type="number" class="form-control" id="substitute_appearances" name="substitute_appearances" min="0" max="100" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of substitute appearances between 0 and 100.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="playtime">Playtime (Minutes):</label>
+                <input type="number" class="form-control" id="playtime" name="playtime" required>
+                <!-- <div class="invalid-feedback">Please enter a valid playtime value.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="goals">Goals:</label>
+                <input type="number" class="form-control" id="goals" name="goals" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of goals.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="assists">Assists:</label>
+                <input type="number" class="form-control" id="assists" name="assists" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of assists.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="yellow_cards">Yellow Cards:</label>
+                <input type="number" class="form-control" id="yellow_cards" name="yellow_cards" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of yellow cards.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="red_cards">Red Cards:</label>
+                <input type="number" class="form-control" id="red_cards" name="red_cards" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of red cards.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="set_piece_goal">Set Piece Goal:</label>
+                <input type="number" class="form-control" id="set_piece_goal" name="set_piece_goal" required>
+                <!-- <div class="invalid-feedback">Please enter a valid number of set piece goals.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="passing_percentage">Passing Percentage (0-100):</label>
+                <input type="number" class="form-control" id="passing_percentage" name="passing_percentage" min="0" max="100" required>
+               <!-- <div class="invalid-feedback">Please enter a valid passing percentage between 0 and 100.</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="aerials_won">Aerials Won:</label>
+                <input type="number" class="form-control" id="aerials_won" name="aerials_won" required>
+            </div>
+
+            <div class="form-group">
+                <label for="man_of_the_matches">Man of the Matches:</label>
+                <input type="number" class="form-control" id="man_of_the_matches" name="man_of_the_matches" required>
+            </div>
+
+            <div class="text-center mt-4">
+                <button id="predict-btn" class="btn btn-lg btn-success" type="button" onclick="predictStats()" style="width: 200px;">Predict Player Stats</button>
+            </div>
+            <div class="text-center mt-4" id="progress-bar" style="display:none;">
+                <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="mt-2">Processing your request...</div>
+            </div>
+            <div class="text-center mt-4" id="result" style="display:none;"></div>
+        </form>
+    </div>
+</body>
+{% endblock %}

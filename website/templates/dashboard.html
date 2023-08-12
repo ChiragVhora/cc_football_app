@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    
+<head>
+    <title>Tableau Dashboard Integration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe title="Dashboard" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=7aebe2be-491a-4e7f-8bd5-1f78f0ff4ecc&autoAuth=true&ctid=8ac61fa5-38ce-4c4f-aa57-ed9a84b7a705" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
