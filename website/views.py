@@ -110,7 +110,8 @@ def get_players_data():
 import joblib
 import numpy as np
 
-model_path = r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\Random_forest_CK(9).sav"
+# model_path = r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\Random_forest_CK(9).sav"
+model_path = r"Random_forest_CK(9).sav"
 model = joblib.load(model_path)
 
 @views.route('/predict', methods=['POST'], endpoint='predict')
