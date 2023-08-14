@@ -52,7 +52,7 @@
                     </div>
 
 
-                    <button type="button" id="submit-selection-btn" class="btn btn-primary">Submit Selection</button>
+                    <button type="button" id="submit-selection-btn" onclick="alert('Players selected, Waiting for other players!...')"class="btn btn-primary">Submit Selection</button>
                 </form>
             </div>
 
@@ -217,6 +217,24 @@
                 selectElement.appendChild(optionElement);
             }
         }
+
+
+        $('#player-selection-form').submit(function() {
+            // your code goes here
+            alert("Players selected, Waiting for other players!")
+            return true
+        });
+
+        // document.getElementById('player-selection-form').addEventListener('submit', (event) => {
+        //     // const submitBtn = document.getElementById('submitBtn');
+        //     // submitBtn.disabled = true; // Disable the submit button
+        //     alert("Players selected, Waiting for other players!...")
+        // });
+
+        // function form_submit_alert(){
+        //     alert("Players selected, Waiting for other players!...")
+        // }
+
     </script>
 </body>
 {% endblock %}

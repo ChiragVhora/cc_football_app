@@ -1,6 +1,6 @@
-
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
+
    <!-- <header style="background-color: #071952; padding: 40px; text-align: center; position: relative;">
     <h1 style="color: #fff; display: inline-block; margin-right: 20px; margin-left: 20px;">CODE KICKERS.com</h1>
 	</header> -->
@@ -11,9 +11,15 @@
         </a>
     </div> -->
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Code Kickers</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-s0x5yk1taI3j9eB3H6n2WsrbczOV6o8C1gG2VCfF4PPXTT2mGgeXWSMRRvrd0sq" crossorigin="anonymous">
     <style>
         body {
-        background-image: url('https://tse2.mm.bing.net/th?id=OIP.6LqIJ583-a4_5peaPhByXAHaFj&pid=Api&P=0&h=180');
+    background-image: url(/static/homePageBg.jpg);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
@@ -23,13 +29,14 @@
         font-family: 'Arial',sans-serif;
         font-size: 16px;
         }
+       
     /* Styling for the header content*/
     h1 {
-        font-family: 'Roboto Slab',serif;
-    font-size: 40px;
+        font-family: 'Bubblegum Sans', cursive;
+    font-size: 60px;
     font-weight: bold;
     margin: 0;
-        position: absolute;
+    position: absolute;
     top: 10px;
     }
   
@@ -54,47 +61,57 @@
   /* Styling for the content */		
     #content {
             position: absolute;
-            top: 100px;
+            top: 1px;
+            left: 100px;
             width: calc(50% - 50px); /* Adjust the width as needed */
-            font-family: "Poppins", sans-serif;
-            font-size: 20px;
+            font-family: 'Bruno Ace SC', cursive;
+            font-size: 40px;
             color: #fff;
             line-height: 1.6
+    
         }
     .solid-box-container {
         display: flex;
         flex-direction: column;
-        align-items: flex-end; /* Align items to the right side */
-        margin-top: 10px;
-        margin-right: 50px; /* Add margin to move the boxes to the right */
-    height: 100vh;
-    padding-bottom: 20px;
+        align-items: flex-start; /* Align items to the right side */
+        margin-top: 140px;
+        margin-left: 50px; /* Add margin to move the boxes to the right */
+        /* height: 100vh; */
+        padding-bottom: 20px;
     }
     
     /* Styling for the option solid boxes */
         .solid-box {
-            width: calc(50% - 250px);
-            background-color: #0B666A;
+            width: calc(40%);
+            background-color: rgba(96, 98, 98, 0.5);
             color: #fff;
             padding: 20px;
-            margin-top: 10px;
+            margin-left: 5%;
+            margin-top: 30px;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 15px;
         }
+        
     /* Hover effect for the option solid boxes */
         .solid-box:hover {
-            background-color: #35A29F;
-        }
+            background-color: #424c4c;       
+         }
+         
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
 </head>
 
-
-	<div id="content"; style="margin-top: 80px;">
-        <h2>CODE KICKERS Make Your Best Team</h2>
-        <p>Soccer Player Performance Predictions gives rating helps you choose the best player to be in your team.</p>
-        <p>Explore the dashboard to evaluate the performance of the player of your interest.</p>
+<body>
+	<div id="content"; style="margin-top: 90px;">
+        <h1>CODE KICKERS</h1>
         <!-- Add more content as needed -->
     </div>
+    
 	<div class="solid-box-container">
 		<div class="solid-box" onclick="window.location.href = '/player-prediction';">
 			<h3>Player Performance Prediction</h3>
@@ -104,18 +121,21 @@
 			<h3>Dashboard</h3>
 			<p>Click here to view the dashboard.</p>
 		</div>
-        <div class="solid-box" onclick="window.location.href = '/game';">
-			<h3>Betting simulator</h3>
-			<p>Click here to view the Betting simulator Game.</p>
-		</div>
+        
 		<div class="solid-box" onclick="window.location.href = '/player-statistics';">
 			<h3>Player Detail</h3>
 			<p>Click here to go to PlayerDetail page.</p>
 		</div>    
+
+        <div class="solid-box" onclick="window.location.href = '/game';">
+            <h4>Betting simulator - BETA</h4>
+            <p style="font-size: smaller;">A simulation game where all users can play relatively simplified betting game in real time simulteniously.</p>
+            <p>Try it!</p>
+        </div>
+
 	</div>
  
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+     
 </body>    
 {% endblock %}
 

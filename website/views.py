@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify, session
 from flask_login import login_required, current_user
-from .models import Note
 from . import db
 import json
 from flask_socketio import SocketIO, emit
@@ -14,17 +13,9 @@ views = Blueprint('views', __name__)
 # @login_required
 def home():
     # if request.method == 'POST': 
-    #     note = request.form.get('note')#Gets the note from the HTML 
+    #    if needed
 
-    #     if len(note) < 1:
-    #         flash('Note is too short!', category='error') 
-    #     else:
-    #         new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-    #         db.session.add(new_note) #adding the note to the database 
-    #         db.session.commit()
-    #         flash('Note added!', category='success')
-
-    return render_template("homepage.html", user=current_user)
+    return render_template("homepageFinal.html", user=current_user)
 
 @views.route('/player-prediction', methods=['GET', 'POST'], endpoint='prediction_page')
 @login_required
@@ -33,7 +24,7 @@ def prediction_page():
         print("Post in predict players") 
         flash(message="Post method called in predictPlayers", category='success')
 
-    return render_template("predictPlayer.html", user=current_user)
+    return render_template("playerPrediction.html", user=current_user)
 
 @views.route('/player-statistics', methods=['GET', 'POST'], endpoint='playerStats_page')
 def playerStats_page():
@@ -41,7 +32,7 @@ def playerStats_page():
         print("Post in player-statistics") 
         flash(message="Post method called in player-statistics", category='success')
 
-    return render_template("playerStats.html", user=current_user)
+    return render_template("playerStatsFinal.html", user=current_user)
 
 @views.route('/game', methods=['GET', 'POST'], endpoint='game')
 def prediction_page():
@@ -63,32 +54,19 @@ def prediction_page():
 
 
 
-# @views.route('/delete-note', methods=['POST'], endpoint='delete_note')
-# def delete_note():  
-#     note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
-#     noteId = note['noteId']
-#     note = Note.query.get(noteId)
-#     if note:
-#         if note.user_id == current_user.id:
-#             db.session.delete(note)
-#             db.session.commit()
-
-#     return jsonify({})
-
-
 ##################################### for Statistics #####################################
 import pandas as pd
 
 # Sample leagues and teams (replace this with your actual data)
 # df = pd.read_csv(r"C:\Users\chira\Documents\1 LOYALIST\Term 2\2006\CodeKikkers\DATA\W13-deployment.csv")
-df = pd.read_csv(r"W13-deployment.csv")
+df_stats = pd.read_csv(r"W13-deployment-stats.csv")
 
 @views.route('/get_teams/<league>', methods=['GET'], endpoint='get_teams')
 def get_teams(league):
     print("fetch call for ", league)
     # You can filter teams based on the selected league from your data
     # For example: filtered_teams = teams[league]
-    filtered_teams =  list(df[df["Tournament"]==league]["Team"].unique())
+    filtered_teams =  list(df_stats[df_stats["Tournament"]==league]["Team"].unique())
     return jsonify({'teams': filtered_teams})
 
 @views.route('/get_players_data', methods=['POST'], endpoint='get_players_data')
@@ -97,8 +75,10 @@ def get_players_data():
     selected_league = data.get('league')
     selected_team = data.get('team')
 
-    filtered_players_data = df[(df["Tournament"]==selected_league) & (df["Team"]==selected_team)].drop(['Team', 'Tournament'], axis=1)
-    filtered_players_data["Unnamed: 0"] = range(1, len(filtered_players_data["Age"])+1)
+    filtered_players_data = df_stats[(df_stats["Tournament"]==selected_league) & (df_stats["Team"]==selected_team)].drop(['Team', 'Tournament'], axis=1)
+    print(filtered_players_data.shape[0])
+    # filtered_players_data["Unnamed: 0"] = range(1, filtered_players_data.shape[0]+1)
+    filtered_players_data.insert(0, 'Unnamed: 0', range(1, filtered_players_data.shape[0]+1))
     # print(filtered_players_data.to_json(orient ='index'))
     # print(filtered_players_data)
 

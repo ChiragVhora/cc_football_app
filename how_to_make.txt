@@ -1,0 +1,37 @@
+for GCP VM hosting:
+    1. create vm instance and give it all access 
+    2. install every software we need 
+        1. commands used 
+            - git : for git clone
+            - sudo apt-get install git : for installing git into vm so that we can clone
+            - sudo apt-get install python3 : for installing python v3 in the system
+            - clear
+            - ls : listing FF
+            - git clone "https://github.com/Chiragvhora/cc_football_app.git"
+            - cd cc_football_app : now in the cloned project
+            - ls : checking
+            - python -m pip3 : not working
+            - sudo apt-get -y install python3-pip : for installing pip in the system
+            - sudo apt-get update --fix--missing : for updating any problematic
+            - pip install -r requirement.txt : for installing all library used in local machine with proper version (created from: pip3 freez > requirement.txt)
+            - source ~/.bashrc
+            - vim main_copy.py ( app.py) : to edit in bash
+            - nano requirement.txt
+            - uploaded file goes to home/user/ default so , mv path new_path
+            - git reset --hard : probably erase the current git
+            - git status
+            - git clone
+            - git pull
+            - git branch
+            - cd app folder then > flask run --host 0.0.0.0 ( host on all adresses (local, internal, external))
+
+            test network
+            - curl ifconfig.me : external adress ( imp for accessing online )
+            - ping google.com : check internet access
+            - nc/telnet/ curl -I google.com:80 : check port no 80 
+            - nc/telnet/ curl -I google.com:443 : check port no 443 
+            - ifconfig / ip addr : checking ip addresses
+            - 
+    2. setup firewall for whichever port you are gonna use (ingress, egress)
+        - give acess to port used i.e 5000 
+    
