@@ -35,21 +35,30 @@ def playerStats_page():
     return render_template("playerStatsFinal.html", user=current_user)
 
 @views.route('/game', methods=['GET', 'POST'], endpoint='game')
-def prediction_page():
+def game_page():
     if request.method == 'POST':
         print("Post in game") 
         flash(message="Post method called in game", category='success')
 
     return render_template("game.html", user=current_user)
 
-@views.route('/dashboard', methods=['GET', 'POST'], endpoint='dashboard')
+@views.route('/dashboard-fantacy', methods=['GET', 'POST'], endpoint='dashboard-fantacy')
 @login_required
-def prediction_page():
+def dashboard_fantacy_page():
     if request.method == 'POST':
         print("Post in dashboard") 
         flash(message="Post method called in dashboard", category='success')
 
-    return render_template("dashboard.html", user=current_user)
+    return render_template("dashboardFantacy.html", user=current_user)
+
+@views.route('/dashboard-Scouting', methods=['GET', 'POST'], endpoint='dashboard-Scouting')
+@login_required
+def dashboard_scouting_page():
+    if request.method == 'POST':
+        print("Post in dashboard") 
+        flash(message="Post method called in dashboard", category='success')
+
+    return render_template("dashboardScout.html", user=current_user)
 
 
 

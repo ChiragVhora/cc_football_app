@@ -144,10 +144,13 @@
                         var prediction = data.prediction.toFixed(2);
 
                         var resultHTML = "<h2>Player Stats Prediction</h2>";
-                        resultHTML += "<p><b>Rating:</b> " + prediction + "</p>";
+                        resultHTML += "<h3><b>Rating:</b> " + prediction + "</h3>";
 
                         document.getElementById("result").innerHTML = resultHTML;
-                        document.getElementById("result").style.color = "green";
+                        document.getElementById("result").style.color = "white";
+                        document.getElementById("result").style.backgroundColor = "gray";
+                        document.getElementById("result").style.padding = "10px";
+
                     } else {
                         document.getElementById("result").innerHTML = "<p>Failed to predict player stats. Please try again.</p>";
                         document.getElementById("result").style.color = "red";
@@ -361,7 +364,7 @@
                 </div>
                 <div class="mt-2">Processing your request...</div>
             </div>
-            <div class="text-center mt-4" id="result" style="display:none;"></div>
+            <div class="text-center mt-4" id="result" style="display:none; background-color: rgba(183, 207, 221, 0.275);"></div>
         </form>
     </div>
 </body>
