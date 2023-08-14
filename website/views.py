@@ -42,14 +42,14 @@ def game_page():
 
     return render_template("game.html", user=current_user)
 
-@views.route('/dashboard-fantacy', methods=['GET', 'POST'], endpoint='dashboard-fantacy')
+@views.route('/dashboard-fantasy', methods=['GET', 'POST'], endpoint='dashboard-fantasy')
 @login_required
-def dashboard_fantacy_page():
+def dashboard_fantasy_page():
     if request.method == 'POST':
         print("Post in dashboard") 
         flash(message="Post method called in dashboard", category='success')
 
-    return render_template("dashboardFantacy.html", user=current_user)
+    return render_template("dashboardfantasy.html", user=current_user)
 
 @views.route('/dashboard-Scouting', methods=['GET', 'POST'], endpoint='dashboard-Scouting')
 @login_required
