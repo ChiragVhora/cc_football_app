@@ -2,6 +2,8 @@ from website import create_app
 from flask import session, request, redirect, url_for, jsonify, flash
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import pandas as pd
+from flask_login import current_user
+
 
 app = create_app()
 
@@ -43,7 +45,13 @@ def handle_connect():
     global active_user
     # Handle new WebSocket connection
     # Assign a unique ID to the connected user
-    user_id = request.sid
+    if current_user.is_authenticated:
+        user_id = current_user.first_name  # You can use 'first_name' or any other attribute
+        # Perform actions for logged-in user
+    else:
+    # Perform actions for anonymous user
+        user_id = f"User_{str(request.sid)[:3]}"
+    
     # Store the connected user in the session
     
     print(user_id, "connected-connect called ! #connhere")
@@ -68,7 +76,9 @@ def handle_disconnect():
     active_user -= 1
 
     # Assign a unique ID to the connected user
-    user_id = request.sid
+    # user_id = request.sid
+    user_id = f"User_{str(request.sid)[:3]}"
+
 
     print(user_id, "disconnected !")
 
@@ -125,7 +135,9 @@ def handle_player_selection(data):
     user_id = session.get('user_id')
     # Store the selected player in the dictionary of selected players by user
 
-    user_id = request.sid
+    # user_id = request.sid
+    user_id = f"User_{str(request.sid)[:3]}"
+
     selected_players_by_user[user_id] = selected_playerlist
     
     # print()
@@ -183,7 +195,7 @@ def get_rating(player_name):
 
 if __name__ == '__main__':
     # socketio.run(app, debug=True, host="0.0.0.0",port=8080)
-    socketio.run(app, host='0.0.0.0', port=5000)
-    # socketio.run(app, debug=True)
+    # socketio.run(app, host='0.0.0.0', port=5000)
+    socketio.run(app, debug=True)
 
 
